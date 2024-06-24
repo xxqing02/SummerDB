@@ -1,0 +1,29 @@
+<navigation-bar title="维修驿站" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+
+<view>
+  <view class="userinfo">
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="/static/image/repair.png" background-size="cover"></image>
+      <text class="userinfo-nickname">你好,{{username}}</text>
+  </view>
+
+  <view class="hr"></view>
+  
+  <view class="line"></view>
+  <view class="item">
+    <view class="title">意见反馈</view>
+    <view class="detail2">
+      <text> ></text>
+    </view>
+  </view>
+
+  <view class="line"></view>
+  <view class="item">
+    <view class="title">设置</view>
+    <view class="detail2">
+      <text> ></text>
+    </view>
+  </view>
+
+</view>
+
+

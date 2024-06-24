@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>客户注册</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/image/favicon.ico" >
+    <link rel="stylesheet" href="https://www.w3schools.cn/lib/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="https://www.w3schools.cn/lib/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="/">汽车维修管理系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/register">注册</a></li>
+            </ul>
+            </div>
+    </div>
+    
+</nav>
+
+<script>
+    document.getElementById('sel1').addEventListener('change', function() {
+        this.form.submit();
+    });
+</script>
+
+<div class="container-fluid">
+
+    <div class="register-container">
+        {% if not user_type %}
+        <h2>Register Your Account</h2>
+        <form method="get" action="/register" id="roleForm">
+           {% csrf_token %}
+            <div class="form-group">
+                <label for="sel1">类别:</label>
+                <select class="form-control" id="sel1" name="role" onchange="document.getElementById('roleForm').submit();">
+                <option value="#">请选择</option>
+                <option value="user">我是客户</option>
+                <option value="serviceAdvisor">我是前台管理人员</option>
+                <option value="repairMan">我是维修人员</option>
+                <option value="repairManager">我是车间管理人员</option>
+                </select>
+            </div>
+            <p class="text-center"><a href="/entry" class="btn">Already have an account?</a></p>
+        </form>
+        {% endif %}
+        
+        {% if user_type %}
+            <h2>注册{{user_type}}账户</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="usertype" value="{{ user_type }}">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="text" class="form-control" name="password" id="password" placeholder="输入密码" required>
+                </div>
+                
+                {% if user_type == 'repairMan' %}
+                <div class="form-group"> 
+                    <label for="type">工种</label>
+                    <select class="form-control" id="type" name="type">
+                        <option value="维修员" checked>维修员</option>
+                        <option value="质检员">质检员</option>
+                    </select>
+                </div>  
+                {% endif %}
+
+                {% if user_type == 'user' %}
+                <div class="form-group">
+                    <label for="phone">联系电话</label>
+                    <input type="phone" class="form-control" name="phone" id="phone" placeholder="输入电话">
+                </div>
+                {% endif %}
+
+                <button type="submit" class="register-button">注册</button>
+            </form>
+    
+            <p class="text-center"><a href="/entry" class="btn">Already have an account?</a></p>
+      {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
+

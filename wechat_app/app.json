@@ -1,0 +1,65 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/user/manage/manage",
+    "pages/user/inquire/inquire",
+    "pages/user/home/home",
+    "pages/repair_man/work/work",
+    "pages/repair_man/home/home",
+    "pages/user/message/message",
+    "pages/user/history/history"
+  ],
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/repair_man/work/work",
+        "text": "管理",
+        "iconPath": "/static/image/icon/qianshoushenpitongguo-xianxing.png",
+        "selectedIconPath": "/static/image/icon/qianshoushenpitongguo.png"
+      },
+      {
+        "pagePath": "pages/repair_man/home/home",
+        "text": "我的",
+        "iconPath": "/static/image/icon/hezuoguanxi-xianxing.png",
+        "selectedIconPath": "/static/image/icon/hezuoguanxi.png"
+      },
+      {
+        "pagePath": "pages/user/inquire/inquire",
+        "text": "查询",
+        "iconPath": "/static/image/icon/sousuo-xianxing.png",
+        "selectedIconPath": "/static/image/icon/sousuo.png"
+      },
+      {
+        "pagePath": "pages/user/manage/manage",
+        "text": "管理",
+        "iconPath": "/static/image/icon/danju-xianxing.png",
+        "selectedIconPath": "/static/image/icon/danju.png"
+      },
+      {
+        "pagePath": "pages/user/home/home",
+        "text": "我的",
+        "iconPath": "/static/image/icon/hezuoguanxi-xianxing.png",
+        "selectedIconPath": "/static/image/icon/hezuoguanxi.png"
+      }
+    ]
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "style": "v2",
+  "renderer": "skyline",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

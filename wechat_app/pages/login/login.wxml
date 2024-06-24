@@ -1,0 +1,27 @@
+<view class="v1">
+    <view class="v2">
+        <view class="dltext">登录</view>
+        
+        <view class="nameCs">
+        <input placeholder="请输入用户名" bindinput="bindUsernameInput"/>
+        </view>
+      
+        <view class="passwordCs">
+        <input placeholder="请输入密码"  bindinput="bindPasswordInput"/>
+        </view>
+       
+        <radio-group class="form-item" bindchange="bindRoleSelect">
+            <label class="radio-label">用户
+                <radio value="user" checked="true"/> 
+            </label>
+            <label class="radio-label">维修师
+                <radio value="repair_man"/> 
+            </label>
+        </radio-group>
+
+        <view class="denglu">
+            <button class="btn-dl" type="primary" bindtap="login">登录</button>
+        </view>
+    </view>
+  
+</view>

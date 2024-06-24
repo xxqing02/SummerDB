@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>前台管理</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/static/image/favicon.ico" >
+  <link rel="stylesheet" href="https://www.w3schools.cn/lib/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <script src="https://www.w3schools.cn/lib/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+  <style>
+    .page-header{border-bottom: 1px #e7e9ee; padding-bottom:11.5px;}
+  </style>
+</head>
+<body style="background-color: #f4f5f6;">
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span the="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="/">手机维修管理</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="entrust">维修委托</a></li>
+            <li><a href="project">维修项目</a></li>
+            {% comment %} <li><a href="/service">个人中心</a></li> {% endcomment %}
+            <li><a href="/logout">退出</a></li>   
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top: 100px;">
+    <div class="panel panel-default" style="padding:25px;background-color: #fff;">
+        <div class="page-header">
+            <h3><strong>委托详细信息</strong></h3>
+        </div>
+
+        <div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td>{{ id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Car License Plate</th>
+                        <td>{{ car_license_plate }}</td>
+                    </tr>
+                    <tr>
+                        <th>Principal Name</th>
+                        <td>{{ principal_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Repair Type</th>
+                        <td>{{ repair_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Work Type</th>
+                        <td>{{ work_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Settle Type</th>
+                        <td>{{ settle_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fault Information</th>
+                        <td>{{ fault_info }}</td>
+                    </tr>
+                    <tr>
+                        <th>Material Cost</th>
+                        <td>
+                            {% if material_cost == 0 %}
+                                未填写
+                            {% else %}
+                                {{ material_cost }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Labor Cost</th>
+                        <td>
+                            {% if labor_cost == 0 %}
+                                未填写
+                            {% else %}
+                                {{ labor_cost }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if is_carried %}
+                                已承接
+                            {% else %}
+                                未承接
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Completion</th>
+                        <td>
+                            {% if is_finished %}
+                                已完成
+                            {% else %}
+                                未完成
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Payment Status</th>
+                        <td>
+                            {% if is_paid %}
+                                已支付
+                            {% else %}
+                                未支付
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+          
+          
+    </div>
+</div>
+
+</body>
+</html>
+
+

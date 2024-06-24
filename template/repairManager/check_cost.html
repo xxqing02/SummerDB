@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>前台管理界面</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/static/image/favicon.ico" >
+  <link rel="stylesheet" href="https://www.w3schools.cn/lib/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+  <script src="https://www.w3schools.cn/lib/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .page-header{ border-bottom: 1px solid #e7e9ee; padding-bottom:11.5px; }
+    .modal-dialog { margin-top: 100px; }
+  </style>
+</head>
+<body style="background-color: #f4f5f6;">
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span the="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="/">汽车维修管理系统</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="work">委托管理</a></li>
+            <li><a href="check_cost">结算费用</a></li>
+            {% comment %} <li><a href="/repair_manage">个人中心</a></li> {% endcomment %}
+            <li><a href="/logout">退出</a></li>   
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top: 100px;">
+    <div class="panel panel-default" style="padding:25px;background-color: #fff;">
+      <div class="page-header">
+        <h3><strong>结算费用</strong></h3>
+      </div>
+
+      <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>委托ID</th>
+                    <th>IMEI</th>
+                    <th>故障信息</th>
+                    <th>物料费用</th>
+                    <th>人工费用</th>
+                    <th>总费用</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commission in commission_list %}
+                <tr>
+                    <td>{{ commission.id }}</td>
+                    <td>{{ commission.imei }}</td>
+                    <td>{{ commission.fault_info }}</td>
+                    <td>{{ commission.material_cost }}</td>
+                    <td>{{ commission.labor_cost }}</td>
+                    <td>{{ commission.total_cost }}</td>
+                    <td>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editCostModal{{ commission.id }}">核算总费用</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="editCostModal{{ commission.id }}" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">核算费用 - 委托{{ commission.id }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="check_cost" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="commission_id" value="{{ commission.id }}">
+                                            <div class="form-group">
+                                                <label for="laborCost{{ commission.id }}">人工费用:</label>
+                                                <input type="number" class="form-control" id="laborCost{{ commission.id }}" name="labor_cost" value="{{ commission.labor_cost }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="materialCost{{ commission.id }}">物料费用:</label>
+                                                <input type="number" class="form-control" id="materialCost{{ commission.id }}" name="material_cost" value="{{ commission.material_cost }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="totalCost{{ commission.id }}">总费用:</label>
+                                                <input type="text" class="form-control" id="totalCost{{ commission.id }}" name="total_cost" readonly>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-default">确定</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <script>
+                        $(document).ready(function() {
+                            $('input').on('input', function(e) {
+                                var commissionId = e.target.id.match(/\d+/)[0];  // Extract commission ID from input field's ID
+                                calculateTotalCost(commissionId);
+                            });
+                    
+                            $('.modal').on('shown.bs.modal', function(e) {
+                                var commissionId = $(this).attr('id').match(/\d+/)[0];  // Extract commission ID from modal's ID
+                                calculateTotalCost(commissionId);
+                            });
+                    
+                            function calculateTotalCost(commissionId) {
+                                var laborCost = parseFloat($('#laborCost' + commissionId).val()) || 0;
+                                var materialCost = parseFloat($('#materialCost' + commissionId).val()) || 0;
+                                $('#totalCost' + commissionId).val(laborCost + materialCost);
+                            }
+                        });
+                    </script>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+
+</body>
+</html>

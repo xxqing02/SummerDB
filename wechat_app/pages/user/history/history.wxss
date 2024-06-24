@@ -1,0 +1,30 @@
+/* pages/user/history/history.wxss */
+.container {
+    padding: 10px;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.label {
+    font-weight: bold;
+}
+
+
+.row {
+    margin-bottom: 20rpx;
+    padding: 20rpx;
+    background-color: #ffffff;
+    border-radius: 10rpx;
+    box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+    width: 90%;
+}
+
+.scroll-view {
+    height: 2000rpx; 
+}

@@ -1,0 +1,25 @@
+/**index.wxss**/
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.splash-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 300px); 
+    background-color: #FFF;
+    padding-top: 50px;
+}
+  
+.logo {
+    width: 200px;
+    height: 200px;
+}
+  

@@ -1,0 +1,28 @@
+<!-- pages/repairman/repairman.wxml -->
+<navigation-bar title="维修驿站" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="container">
+    <view class="header">
+        <view class="title">当前任务列表</view>
+    </view>
+
+    <scroll-view scroll-y="true" class="scroll-view">
+
+    <block wx:for="{{tasks}}" wx:key="unique">
+        <view class="row">
+            <view class="cell"><text class="label">任务编号:</text>{{item.id}}</view>
+            <view class="cell"><text class="label">维修项目名称: </text>{{item.project}}</view>
+            <view class="cell"><text class="label">维修预计工时:</text> {{item.work_time}} 小时</view>
+            <view class="cell">
+                <button bindtap="finishTask" data-id="{{item.id}}" class="add-button">标记完成</button>
+            </view>
+        </view>
+    </block>
+
+    </scroll-view>
+
+</view>
+
+<custom-tab-bar selected="{{selectedTabIndex}}"></custom-tab-bar>
+
+

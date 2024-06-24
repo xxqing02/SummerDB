@@ -1,0 +1,27 @@
+<!--pages/user/history/history.wxml-->
+<view style="height: {{navigationBarAndStatusBarHeight}}px;background-color:#fff;width: 100%;display: flex;flex-direction: row;">
+    <view style="padding-top:{{statusBarHeight+10}}px;width: 100%;">
+        <image src="/static/image/back.png" style="height: 20px; width: 20px;padding-left:3vw;float: left;" bindtap="goBack"></image>
+        <view style="float: left;margin-left: 140px;font-size: 18px;"> 
+            <text>维修历史</text>
+        </view>
+    </view>    
+</view>
+
+<view class="container">
+    <scroll-view scroll-y="true" class="scroll-view">
+        <block wx:for="{{history}}" wx:key="unique">
+            <view class="row">
+                <view class="cell"><text class="label">委托号：</text>{{item.id}}</view>
+                <view class="cell"><text class="label">车牌号：</text>{{item.car_license_plate}}</view>
+                <view class="cell"><text class="label">故障信息：</text>{{item.fault_info}}</view>
+                <view class="cell"><text class="label">维修费用：</text>{{item.total_cost}}</view>
+                <view class="cell"><text class="label">维修时间：</text>{{item.time}}</view>
+            </view>
+        </block>
+    </scroll-view>
+</view>
+
+
+
+

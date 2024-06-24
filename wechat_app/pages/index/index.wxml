@@ -1,0 +1,7 @@
+<!--index.wxml-->
+<navigation-bar title="维修驿站" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+    <view class="splash-container">
+    <image class="logo" src="/static/image/logo.png" mode="aspectFit"></image>
+    </view>
+</scroll-view>
