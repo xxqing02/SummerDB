@@ -12,6 +12,22 @@
     <script src="https://www.w3schools.cn/lib/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        .table {
+            width: 100%; /* 表格宽度为100% */
+            margin: 20px 0; /* 表格的外边距 */
+        }
+        
+        .table th,.table tbody tr td{
+            vertical-align: middle;
+            text-align: center; /* 文本对齐方式 */
+            font-size: 16px; /* 文字大小 */
+        }
+        
+        .table tr:hover {
+            background-color: #ddd; /* 悬停效果 */
+        }
+    </style>
 </head>
 
 <script>
@@ -20,7 +36,7 @@
     });
 </script>
 
-<body>
+<body style="background-color: #f4f5f6;height: 100%;">
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
@@ -30,20 +46,30 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>                        
         </button>
-        <a class="navbar-brand" href="/">手机维修管理</a>
+
+        <a class="navbar-brand" href="#myPage" >
+            {% load static %}
+            <img src="{% static 'image/logo.png' %}" alt="Logo" style="height: 30px;">
+            <span style="margin-left: 10px;color:black;">手机维修管理</span>
+        </a>
+
         </div>
+    
         <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="entrust">维修委托</a></li>
-            <li><a href="project">维修项目</a></li>
-            {% comment %} <li><a href="/service">个人中心</a></li> {% endcomment %}
-            <li><a href="/logout">退出</a></li>   
-        </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item"><a href="entrust" class="nav-link">维修委托</a></li>
+                <li class="nav-item"><a href="project" class="nav-link">维修项目</a></li>
+                <li class="nav-item"><a href="/logout" class="nav-link">登出</a></li>
+            </ul>
         </div>
+
     </div>
 </nav>
 
-<div class="container" style="padding-top: 100px;">
+<div style="display: flex; justify-content: center;">
+    <div class="container" style="margin-top: 130px;background:white;width:95%;">
+
+    
     <div class="header-container">
         <h2 class="header-title"><strong>维修项目管理</strong></h2>
         <button type="button" class="btn" data-toggle="modal" data-target="#addProject">添加维修项目</button>
@@ -54,7 +80,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">添加维修项目</h4>
+                <h3 class="modal-title">添加维修项目</h3>
                 </div>
                 <div class="modal-body">
                 <!-- 表单 -->
@@ -87,7 +113,7 @@
         
     </div>
     <br>
-    <table class="table table-striped">
+    <table class="table">
       <thead>
         <tr>
             <th>项目编号</th>
@@ -148,13 +174,15 @@
                 <form action="project" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{ item.id }}">
-                    <button class="btn btn-danger" name="action" value="delete" type="submit">删除</button>
+                    <button class="btn btn-danger" style="color:white;" name="action" value="delete" type="submit">删除</button>
                 </form>
             </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+
+    </div>
 </div>
 
 </body>

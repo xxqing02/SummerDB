@@ -324,9 +324,9 @@ def manageTask(request):
     for entrust in entrust_list:
         entrust_info = {
             'id': entrust.id,
-            'user_name': entrust.principal.user_name if entrust.principal else 'No User Info',
+            'user_name': entrust.user.name if entrust.user else 'No User Info',
             'imei': entrust.phone.imei if entrust.phone else 'No Phone Info',
-            'phone_model': entrust.car.model if entrust.phone else 'No Phone Info',
+            'phone_model': entrust.phone.model if entrust.phone else 'No Phone Info',
             'fault_info': entrust.faultInfo,
             'repair_type': entrust.repairType,
             'is_paid': entrust.isPaid,

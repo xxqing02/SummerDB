@@ -23,19 +23,20 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      {% comment %} <a class="navbar-brand" href="#myPage">Logo</a> {% endcomment %}
-      <a class="navbar-brand" href="#myPage" style="display: flex; align-items: center;">
+      
+      <a class="navbar-brand" href="#myPage" >
         {% load static %}
         <img src="{% static 'image/logo.png' %}" alt="Logo" style="height: 30px;">
+        <span style="margin-left: 10px;color:black;">国产之星</span>
       </a>
-    
     </div>
+
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#myPage">首页</a></li>
-        <li><a href="entry">登陆</a></li>
-        <li><a href="register">注册</a></li>
-        <li><a href="#contact">联系方式</a></li>
+        <li class="nav-item"><a href="#myPage" class="nav-link active">首页</a></li>
+        <li class="nav-item"><a href="#contact" class="nav-link">联系</a></li>
+        <li class="nav-item"><a href="entry" class="nav-link">登陆</a></li>
+        <li class="nav-item"><a href="register" class="nav-link">注册</a></li>
       </ul>
     </div>
   </div>
@@ -50,10 +51,10 @@
     </ol>
 
     <!-- 幻灯片包装器 -->
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
+    <div class="carousel-inner" role="listbox" >
+      <div class="item active" style="margin-top:100px;">
         {% load static %}
-        <img src="{% static 'image/home.png' %}"  width="1200" height="700">
+        <img src="{% static 'image/home1.jpg' %}"  width="1200" height="700">
         {% comment %} <div class="carousel-caption">
           <h3>Title</h3>
           <p>Brief introduction</p> 
@@ -61,15 +62,10 @@
         {% endcomment %}
       </div>
 
-      <div class="item">
+      {% comment %} <div class="item">
         {% load static %}
-        <img src="{% static 'image/home.png' %}"  width="1200" height="700">
-         {% comment %} <div class="carousel-caption">
-          <h3>Title</h3>
-          <p>Brief introduction</p> 
-        </div>      
-        {% endcomment %}     
-      </div>
+        <img src="{% static 'image/home.png' %}"  width="1200" height="700">   
+      </div> {% endcomment %}
     
     </div>
 
@@ -162,6 +158,21 @@ $(document).ready(function(){
     } 
   });
 })
+
+document.addEventListener("DOMContentLoaded", function() {
+  var navLinks = document.querySelectorAll('.nav-link');
+
+  // 为每个链接添加点击事件监听器
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      // 移除当前所有激活状态
+      navLinks.forEach(l => l.classList.remove('active'));
+      // 激活点击的链接
+      this.classList.add('active');
+    });
+  });
+});
+
 </script>
 
 </body>

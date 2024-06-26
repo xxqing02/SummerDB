@@ -19,16 +19,22 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>                        
-        </button>
-        <a class="navbar-brand" href="/">汽车维修管理系统</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            
+            <a class="navbar-brand" href="/" >
+              {% load static %}
+              <img src="{% static 'image/logo.png' %}" alt="Logo" style="height: 30px;">
+              <span style="margin-left: 10px;color:black;">国产之星维修系统</span>
+            </a>
         </div>
+
         <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/register">注册</a></li>
+            <ul class="nav navbar-nav navbar-right" style="margin-top:30px; list-style-type: none;margin-right:20px;">
+                <li><a href="/entry" style="color:black;" >登录</a></li>
             </ul>
             </div>
     </div>
@@ -45,7 +51,7 @@
 
     <div class="register-container">
         {% if not user_type %}
-        <h2>Register Your Account</h2>
+        <h2>注册账户</h2>
         <form method="get" action="/register" id="roleForm">
            {% csrf_token %}
             <div class="form-group">
@@ -58,7 +64,7 @@
                 <option value="repairManager">我是车间管理人员</option>
                 </select>
             </div>
-            <p class="text-center"><a href="/entry" class="btn">Already have an account?</a></p>
+            <p class="text-center"><a href="/entry" class="btn">已有账户?点击登录</a></p>
         </form>
         {% endif %}
         
@@ -96,7 +102,7 @@
                 <button type="submit" class="register-button">注册</button>
             </form>
     
-            <p class="text-center"><a href="/entry" class="btn">Already have an account?</a></p>
+            <p class="text-center"><a href="/entry" class="btn">已有账户?点击登录</a></p>
       {% endif %}
     </div>
 </div>

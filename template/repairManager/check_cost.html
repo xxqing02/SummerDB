@@ -22,32 +22,36 @@
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span the="icon-bar"></span>                        
-        </button>
-        <a class="navbar-brand" href="/">汽车维修管理系统</a>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span the="icon-bar"></span>                        
+          </button>
+          <a class="navbar-brand" href="#myPage" >
+              {% load static %}
+              <img src="{% static 'image/logo.png' %}" alt="Logo" style="height: 30px;">
+              <span style="margin-left: 10px;color:black;">维修委托管理</span>
+          </a>
+        </div>
+  
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="nav-item"><a href="work" class="nav-link">委托管理</a></li>
+              <li class="nav-item"><a href="check_cost" class="nav-link">费用结算</a></li>
+              <li class="nav-item"><a href="/logout" class="nav-link">登出</a></li>
+          </ul>
+        </div>
+  
       </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="work">委托管理</a></li>
-            <li><a href="check_cost">结算费用</a></li>
-            {% comment %} <li><a href="/repair_manage">个人中心</a></li> {% endcomment %}
-            <li><a href="/logout">退出</a></li>   
-        </ul>
-      </div>
-    </div>
 </nav>
 
-<div class="container" style="padding-top: 100px;">
-    <div class="panel panel-default" style="padding:25px;background-color: #fff;">
-      <div class="page-header">
+<div style="display: flex; justify-content: center;">
+    <div class="container" style="margin-top: 130px;background:white;width:95%;">
+      <div class="header-container">
         <h3><strong>结算费用</strong></h3>
       </div>
 
-      <div class="panel-body">
         <table class="table">
             <thead>
                 <tr>
@@ -128,7 +132,6 @@
                 {% endfor %}
             </tbody>
         </table>
-      </div>
     </div>
 </div>
 
