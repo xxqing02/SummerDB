@@ -157,8 +157,8 @@
                         </div>
                         
                         <div class="col-sm-4 form-group">
-                          <label for="car_select">选择手机</label>
-                          <select id="car_select" name="car_id">
+                          <label for="phone_select">选择手机</label>
+                          <select id="phone_select" name="phone_id">
                               <option value="#">请选择手机</option>
                           </select>
                         </div>
@@ -195,13 +195,13 @@
         <script>
           document.getElementById('customer_select').addEventListener('change', function() {
               var customerId = this.value;
-              fetch(`/service/get_cars?customer_id=${customerId}`)
+              fetch(`/service/get_phones?customer_id=${customerId}`)
                   .then(response => response.json())
                   .then(data => {
-                      var carSelect = document.getElementById('car_select');
-                      carSelect.innerHTML = '<option value="#">请选择车辆</option>';
-                      data.forEach(car => {
-                          carSelect.innerHTML += `<option value="${car.id}">${car.id} ${car.license_plate}</option>`;
+                      var phoneSelect = document.getElementById('phone_select');
+                      phoneSelect.innerHTML = '<option value="#">请选择手机</option>';
+                      data.forEach(phone => {
+                          phoneSelect.innerHTML += `<option value="${phone.id}">${phone.model} ${phone.imei} </option>`;
                       });
                   });
           });

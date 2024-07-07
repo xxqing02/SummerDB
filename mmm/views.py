@@ -158,6 +158,7 @@ def showProject(request):
 
 def entrust(request):
     service_name = request.session.get('username')
+    print("service_name:",service_name)
     service_id = models.ServiceAdvisor.objects.filter(name=service_name).first().id
     user_list = models.User.objects.all()
     
@@ -190,13 +191,13 @@ def entrust(request):
     if request.method == 'POST':
         if request.POST.get('action') == 'add':
             user_id = request.POST.get('customer_id')
-            car_id = request.POST.get('car_id')
-            
+            phone_id = request.POST.get('phone_id')
             error_info = request.POST.get('fault_description')
-            repair_type = request.POST.get('repairType')
-            commission = models.Repair_commission.objects.create(user_id=user_id,
+            repair_type = request.POST.get('repair_type')
+            print(user_id,phone_id,error_info,repair_type)
+            commission = models.RepairCommission.objects.create(user_id=user_id,
                                                                  serviceAdvisor_id=service_id,
-                                                                 phone_id=car_id,
+                                                                 phone_id=phone_id,
                                                                  faultInfo=error_info,
                                                                  repairType=repair_type,
                                                                  )
@@ -236,7 +237,11 @@ def entrust_details(request):
 def get_phones(request):
     user_id = request.GET.get('customer_id')
     phone = models.UserPhones.objects.filter(user_id=user_id)
-    phone_list = [{'id':item.phone_id,'id':models.MobilePhone.objects.filter(id=item.phone_id).first().id} for item in phone]
+    phone_list = [{
+            'id': item.phone_id,
+            'imei': item.phone.imei,
+            'model': item.phone.model
+            } for item in phone.select_related('phone')]   
     return JsonResponse(phone_list,safe=False)
 
 
@@ -355,13 +360,13 @@ def manageTask(request):
         print(commission_id,projects,times,men)
         for project_id,time,man_id in zip(projects,times,men):
             man = models.RepairMan.objects.filter(id=man_id).first()
-            projectname = models.RepairProject.objects.filter(id=project_id).first().project
+            projectname = models.RepairProject.objects.filter(id=project_id).first().projectName
             commission = models.RepairCommission.objects.filter(id=commission_id).first()
             order = models.RepairOrder.objects.create(project=projectname,
                                                         repairMan=man,
                                                         repairCommission=commission)
             
-        models.RepairCommission.objects.filter(id=commission_id).update(is_carried=True) 
+        models.RepairCommission.objects.filter(id=commission_id).update(isCarried=True) 
    
         return redirect('/repair_manage/work')
 
@@ -376,7 +381,7 @@ def user_login(request):
         password = request.GET.get('password')
         role = request.GET.get('role')
         if role == "user":
-            user = models.User.objects.filter(user_name=username,user_password=password).first()
+            user = models.User.objects.filter(name=username,password=password).first()
             if user:
                 return JsonResponse({'status': 'success', 'message': '登录成功'})
             else:
@@ -399,7 +404,6 @@ def user_managephone(request):
             user_phone = models.UserPhones.objects.filter(user=user).all()
             phone_list = [{ 'model': phone.phone.model,
                             'imei': phone.phone.imei,
-                            'color': phone.phone.color,
                         } for phone in user_phone ]
             return JsonResponse(phone_list,safe=False)
         
@@ -408,11 +412,13 @@ def user_managephone(request):
             imei = request.GET.get('imei')
             phone = models.MobilePhone.objects.create(model=model,imei=imei)
             user = models.User.objects.filter(name=username).first()
-            models.UserPhones.objects.create(user=user,vehicle=vehicle)
+            models.UserPhones.objects.create(user=user,phone=phone)
             return JsonResponse({'status': 'success', 'message': '添加成功'})
         
         elif action == "delete":
             imei = request.GET.get('imei')
+            if models.RepairCommission.objects.filter(phone__imei=imei).first():
+                return JsonResponse({'status': 'fail', 'message': '该手机维修中,无法删除'})
             models.MobilePhone.objects.filter(imei=imei).first().delete()
             return JsonResponse({'status': 'success', 'message': '删除成功'})
         
@@ -424,10 +430,12 @@ def commission(request):
     entrust = models.RepairCommission.objects.filter(user=user,isPaid=False).all()
     entrust_list = []
     for item in entrust:
-        imei= models.MobilePhone.objects.filter(id=item.phone.id).first().imei
+        imei = models.MobilePhone.objects.filter(id=item.phone.id).first().imei
+        model = models.MobilePhone.objects.filter(id=item.phone.id).first().model
         info = {
             'id':item.id,
             'imei':imei,
+            'model':model,
             'fault_info':item.faultInfo,
             'material_cost': item.materialCost,
             'labor_cost':item.laborCost,
@@ -441,18 +449,24 @@ def commission(request):
 # inquire progress
 def progressquery(request):
     entrust_id = request.GET.get('entrust_id')
-    entrust_list = models.RepairCommission.objects.filter(id=entrust_id).all()
+    entrust = models.RepairCommission.objects.filter(id=entrust_id).first()
+    orders = models.RepairOrder.objects.filter(repairCommission=entrust).all()
+    numbers = len(orders)
+    finished = orders.filter(isFinished=True).count()
     order_progress = []
-    for item in entrust_list:
-        orders = models.RepairOrder.objects.filter(repairCommission=item).all()
-        for order in orders:
-            order_info = {
-                'project': order.project,
-                'progress':order.isFinished,
-            }
-            order_progress.append(order_info)
+    for order in orders:
+        order_info = {
+            'project': order.project,
+            'progress':order.isFinished,
+        }
+        order_progress.append(order_info)
+    progress = {
+        'numbers': numbers,
+        'finished': finished,
+        'order_progress': order_progress
+    }
 
-    return JsonResponse(order_progress,safe=False)
+    return JsonResponse(progress,safe=False)
 
 
 def get_commissionhistory(request):
@@ -490,12 +504,15 @@ def get_order(request):
     task = models.RepairOrder.objects.filter(repairMan=repair_man).all()
     task_list = []
     for item in task:
+        repair_commission = models.RepairCommission.objects.filter(id=item.repairCommission.id).first()
+        phone = models.MobilePhone.objects.filter(id=repair_commission.phone.id).first()
         if item.isFinished:
             continue
         task_info = {
             'id': item.id,
             'project': item.project,
-            'is_finished': item.isFinished
+            'is_finished': item.isFinished,
+            'model': phone.model,
         }
         task_list.append(task_info)
     return JsonResponse(task_list,safe=False)
@@ -504,7 +521,7 @@ def get_order(request):
 def repair_finsh(request):
     id = request.GET.get('id')
     repair_order = models.RepairOrder.objects.filter(id=id).first()
-    repair_order.is_finished=True
+    repair_order.isFinished=True
     repair_order.save()
     commission = models.RepairCommission.objects.filter(id=repair_order.repairCommission.id).first()
     orders = models.RepairOrder.objects.filter(repairCommission=commission)    
@@ -516,7 +533,5 @@ def repair_finsh(request):
     if all_finish:
         commission.isFinished=True
         commission.save()
-        # 创建一条维修完成的message
-        ##########################
 
     return JsonResponse({'status': 'success', 'message': '维修完成'})

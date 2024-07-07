@@ -170,7 +170,7 @@
         newDiv.classList.add('repair-row');
     
         var projectsOptions = repairProjects.map(function(project) {
-            return `<option value="${project.pk}">${project.fields.project}</option>`;
+            return `<option value="${project.pk}">${project.fields.projectName}</option>`;
         }).join('');
     
         var menOptions = repairMen.map(function(man) {

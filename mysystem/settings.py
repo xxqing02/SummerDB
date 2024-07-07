@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-gqk=shjay3ltisipnxvf0oo%(-+#b&$i(3ou@v@klk6wn76svz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*","47.121.116.241","app6321.acapp.acwing.com.cn","127.0.0.1"]
+ALLOWED_HOSTS = ["*","47.121.116.241","127.0.0.1","app6321.acapp.acwing.com.cn"]
 
 
 # Application definition
@@ -39,29 +39,30 @@ INSTALLED_APPS = [
     'corsheaders',
     'mmm',
 ]
-#CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'corsheaders.middleware.CorsMiddleware',#解决跨域访问
-    #'django.middleware.common.CommonMiddleware',#解决跨域访问
+    'corsheaders.middleware.CorsMiddleware',#解决跨域访问
+    'django.middleware.common.CommonMiddleware',#解决跨域访问
 ]
 
-# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-# SESSION_COOKIE_NAME  = "sessionid"
-# SESSION_COOKIE_PATH  = "/"
-# SESSION_COOKIE_DOMAIN = None
-# SESSION_COOKIE_SECURE = False
-# SESSION_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_AGE = 1209600
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-# SESSION_SAVE_EVERY_REQUEST = False
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_COOKIE_NAME  = "sessionid"
+SESSION_COOKIE_PATH  = "/"
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 1209600
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = False
+
 
 ROOT_URLCONF = 'mysystem.urls'
 
@@ -90,9 +91,9 @@ WSGI_APPLICATION = 'mysystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dragon',
-        'USER': 'root',
-        'PASSWORD': '123456',
+        'NAME': 'dragon_repair',
+        'USER': 'test',
+        'PASSWORD': '12181218aA',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -136,7 +137,7 @@ USE_TZ = True
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -155,3 +156,4 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
