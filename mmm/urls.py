@@ -25,15 +25,16 @@ urlpatterns = [
     path('repair_manage/', views.manageIndex,name='repair_manager'),
     path('repair_manage/work',views.manageTask,name='manageTask'),
     path('repair_manage/check_cost',views.check_cost,name='check_cost'),
-    # wechat applet #
-
+    
+    # Wechat applet backend
     # Module: user
     path('user_login/',views.user_login,name="user_login"),
     path('user_managephone/',views.user_managephone,name='user_managephone'),
     path('user_commission/',views.commission,name='user_commission'),
     path('user_progressquery/',views.progressquery,name='user_progressquery'),
     path('user_commissionhistory/',views.get_commissionhistory,name='user_commissionhistory'),
-    path('user_pay/',views.pay,name='user_pay'),
+    path('user_getuserinfo/',views.getUserInfo,name='user_getuserinfo'),
+    path('user_setuserinfo/',views.setUserInfo,name='user_setuserinfo'),
     
     # Module: repair man
     path('repair_getorder/',views.get_order,name='getorder'),

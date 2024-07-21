@@ -27,6 +27,7 @@ def entry(request):
             man = models.ServiceAdvisor.objects.filter(name=username).first()
             if man and man.password == password:
                 request.session['username'] = username
+                print("Session set: ", request.session['username']) 
                 return redirect('/service/entrust')
             else:
                 context = {}
@@ -213,7 +214,7 @@ def entrust_delete(request):
 
 def entrust_pay(request):
     entrust_id = request.GET.get('id')
-    models.RepairCommission.objects.filter(id=entrust_id).update(is_paid=True)
+    models.RepairCommission.objects.filter(id=entrust_id).update(isPaid=True)
     return  redirect('/service/entrust')
 
 def entrust_details(request):
@@ -247,47 +248,40 @@ def get_phones(request):
 
 
 # Module: repair manager
-# 对于一个委托单，如果里面所有的工作都已经完成，显示在结算费用的页面，点击右侧结算费用按钮，显示当前的
-# 人工费用，物料费用，这两个费用可以修改，确认后，自动计算总费用，修改委托单信息。费用计算完毕。
-# 折扣在用户支付时计算。
 
-# 费用计算 待更正
 def check_cost(request):
     commission_all = models.RepairCommission.objects.filter(isFinished=True,isPaid=False,totalCost=0).all()
     commission_list = []
-    # for commission in commission_all:
-    #     # 人工费用计算
-    #     labor_cost = 0
-    #     # orders = models.Repair_order.objects.filter(repair_commission=commission).all()
-    #     # for order in orders:
-    #     #     labor_cost += order.work_time * models.RepairProject.objects.filter(project=order.project).first().unit_laber_cost
-    #     # models.Repair_commission.objects.filter(id=commission.id).update(labor_cost=labor_cost)
-    #     # 物料费用计算
-    #     material_cost = 0
-    #     # for order in orders:
-    #     #     material_cost += models.RepairProject.objects.filter(project=order.project).first().material_cost
-    #     # models.Repair_commission.objects.filter(id=commission.id).update(material_cost=material_cost)
-    #     # 信息发送前端进行检查
-    #     imei = models.MobilePhone.objects.filter(id=commission.phone.id).first().imei
-    #     info = {
-    #         'id':commission.id,
-    #         'imei':imei,
-    #         'fault_info':commission.fault_info,
-    #         'material_cost':commission.material_cost,
-    #         'labor_cost':commission.labor_cost,
-    #         'total_cost':commission.total_cost
-    #     }
-    #     commission_list.append(info)
+    for commission in commission_all:
+        labor_cost = material_cost = 0
+        orders = models.RepairOrder.objects.filter(repairCommission=commission).all()
+        for order in orders:
+             labor_cost += models.RepairProject.objects.filter(projectName=order.project).first().laborCost
+             material_cost += models.RepairProject.objects.filter(projectName=order.project).first().materialCost
+        
+        models.RepairCommission.objects.filter(id=commission.id).update(materialCost=material_cost,
+                                                                          laborCost=labor_cost)
+        
+        imei = models.MobilePhone.objects.filter(id=commission.phone.id).first().imei
+        info = {
+            'id':commission.id,
+            'imei':imei,
+            'fault_info':commission.faultInfo,
+            'material_cost':commission.materialCost,
+            'labor_cost':commission.laborCost,
+            'total_cost':commission.totalCost
+        }
+        commission_list.append(info)
 
-    # if request.method == 'POST':
-    #     commission_id = request.POST.get('commission_id')
-    #     material_cost = request.POST.get('material_cost')
-    #     labor_cost = request.POST.get('labor_cost')
-    #     total_cost = request.POST.get('total_cost')
-    #     models.Repair_commission.objects.filter(id=commission_id).update(material_cost=material_cost,
-    #                                                                       labor_cost=labor_cost,
-    #                                                                       total_cost=total_cost)
-    #     return redirect('/repairManage/check_cost')
+    if request.method == 'POST':
+        commission_id = request.POST.get('commission_id')
+        material_cost = request.POST.get('material_cost')
+        labor_cost = request.POST.get('labor_cost')
+        total_cost = request.POST.get('total_cost')
+        models.RepairCommission.objects.filter(id=commission_id).update(materialCost=material_cost,
+                                                                          laborCost=labor_cost,
+                                                                          totalCost=total_cost)
+        return redirect('/repairManager/check_cost')
     
     return render(request,'repairManager/check_cost.html',{'commission_list':commission_list})
 
@@ -489,14 +483,34 @@ def get_commissionhistory(request):
         }
         entrust_data.append(entrust_info)
     return JsonResponse(entrust_data,safe=False)
+
+
+def getUserInfo(request):
+    username = request.GET.get('username')
+    user = models.User.objects.filter(name=username).first()
+    info = {
+        'name': user.name,
+        'phone': user.phone,
+        'password': user.password,
+        'birthday': user.birthday,
+        'email': user.email,
+        'gender':user.gender
+    }
+    return JsonResponse(info,safe=False)
+        
+def setUserInfo(request):
+    username = request.GET.get('username')
+    phone = request.GET.get('phone')
+    email = request.GET.get('email')
+    password = request.GET.get('password')
+    gender = request.GET.get('gender')
+    birthday = request.GET.get('birthday')
+    models.User.objects.filter(name=username).update(
+        name=username,phone=phone,email=email,password=password,gender=gender,birthday=birthday
+    )
+    return JsonResponse({'status': 'success', 'message': '修改成功'})
+                                                    
     
-
-def pay(requset):
-    commission_id = requset.GET.get('commission_id')
-    models.RepairCommission.objects.filter(id=commission_id).update(isPaid=True)
-    return JsonResponse({'status': 'success', 'message': '支付成功'})
-
-
 # repair_man
 def get_order(request):
     username = request.GET.get('username')
