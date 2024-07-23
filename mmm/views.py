@@ -495,15 +495,21 @@ def getUserInfo(request):
     return JsonResponse(info,safe=False)
         
 def setUserInfo(request):
-    username = request.GET.get('username')
+    username = request.GET.get('name')
     phone = request.GET.get('phone')
     email = request.GET.get('email')
     password = request.GET.get('password')
     gender = request.GET.get('gender')
     birthday = request.GET.get('birthday')
-    models.User.objects.filter(name=username).update(
-        name=username,phone=phone,email=email,password=password,gender=gender,birthday=birthday
+    print(username,phone,email,gender,birthday)
+    updated_count = models.User.objects.filter(name=username).update(
+        phone=phone, email=email, password=password, gender=gender, birthday=birthday
     )
+
+    if updated_count == 0:
+        print("没有找到对应的用户")
+        return JsonResponse({'status': 'error', 'message': '没有找到对应用户'})
+
     return JsonResponse({'status': 'success', 'message': '修改成功'})
                                                     
     
