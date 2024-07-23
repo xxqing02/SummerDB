@@ -369,20 +369,18 @@ def user_login(request):
     if request.method == "GET":
         username = request.GET.get('username')
         password = request.GET.get('password')
-        role = request.GET.get('role')
-        if role == "user":
-            user = models.User.objects.filter(name=username,password=password).first()
-            if user:
-                return JsonResponse({'status': 'success', 'message': '登录成功'})
-            else:
-                return JsonResponse({'status': 'fail', 'message': '用户名或密码错误'})
-            
-        elif role == "repair_man":
-            repairpeople = models.RepairMan.objects.filter(name=username,password=password).first()
-            if repairpeople:
-                return JsonResponse({'status': 'success', 'message': '登录成功'})
-            else:
-                return JsonResponse({'status': 'fail', 'message': '用户名或密码错误'})
+
+        user = models.User.objects.filter(name=username, password=password).first()
+        if user:
+            return JsonResponse({'status': 'success', 'message': '登录成功'})
+
+        # 如果用户模型中未找到，尝试在维修人员模型中查找
+        repairpeople = models.RepairMan.objects.filter(name=username, password=password).first()
+        if repairpeople:
+            return JsonResponse({'status': 'success', 'message': '登录成功'})
+
+        # 未找到
+        return JsonResponse({'status': 'fail', 'message': '用户名或密码错误'})
 
 
 def user_managephone(request):
