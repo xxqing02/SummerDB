@@ -4,10 +4,6 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.db.models import Prefetch
 from django.core import serializers
-from operator import itemgetter
-import json
-
-# common 
 
 def home(request):
     return render(request,'home.html')
