@@ -4,6 +4,10 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.db.models import Prefetch
 from django.core import serializers
+import random
+from django.core.mail import send_mail
+from django.utils import timezone
+from datetime import timedelta
 
 def home(request):
     return render(request,'home.html')
@@ -381,6 +385,59 @@ def user_login(request):
 
         # 未找到
         return JsonResponse({'status': 'fail', 'message': '用户名或密码错误'})
+
+
+
+def sendVerificateCode(request):
+    username = request.GET.get('username')
+    user = models.User.objects.filter(name=username).first()
+    if not user:
+        return JsonResponse({'status': 'fail', 'message': '用户名不存在'})
+
+    userEmail = user.email
+    code = random.randint(100000, 999999)
+    send_mail(
+        '国产之星维修端密码重置',
+        f'尊敬的用户你好,你的验证码是{code},验证码10分种内有效。',
+        'jovanwan6@gmail.com',
+        [userEmail],
+        fail_silently=False,
+    )
+
+    models.Verification.objects.filter(email=userEmail).delete()
+
+    models.Verification.objects.create(
+        email=userEmail,
+        code=code,
+        expiresAt=timezone.now() + timedelta(minutes=10)
+    )
+
+    return JsonResponse({'status': 'success', 'message': '验证码已发送，请查看您的邮箱'})
+
+
+def resetUserPassword(request):
+    username = request.GET.get('username')
+    user = models.User.objects.filter(name=username).first()
+    if not user:
+        return JsonResponse({'status': 'fail', 'message': '用户名不存在'})
+    
+    newpassword = request.GET.get('password')
+    verificateCode = request.GET.get('verificateCode')
+
+    verification = models.Verification.objects.filter(email=user.email).first()
+    if not verification or verification.code != verificateCode:
+        return JsonResponse({'status': 'fail', 'message': '验证码错误'})
+    if verification.expires_at < timezone.now():
+        return JsonResponse({'status': 'fail', 'message': '验证码已过期'})
+
+    else:
+        user.password = newpassword
+        user.save()
+
+        verification.delete()
+
+        return JsonResponse({'status': 'success', 'message': '密码重置成功'})
+
 
 
 def user_managephone(request):

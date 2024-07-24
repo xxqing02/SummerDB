@@ -74,3 +74,9 @@ class RepairProject(models.Model):
     projectName = models.CharField(max_length=20)
     laborCost = models.FloatField()
     materialCost = models.FloatField()
+
+class Verification(models.Model):
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(max_length=254,null=True)
+    code = models.CharField(max_length=6,null=True)
+    expiresAt = models.DateTimeField(null=True)

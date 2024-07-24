@@ -35,7 +35,9 @@ urlpatterns = [
     path('user_commissionhistory/',views.get_commissionhistory,name='user_commissionhistory'),
     path('user_getuserinfo/',views.getUserInfo,name='user_getuserinfo'),
     path('user_setuserinfo/',views.setUserInfo,name='user_setuserinfo'),
-    
+    path('user_sendVerificateCode/',views.sendVerificateCode,name='user_sendVerificateCode'),
+    path('user_resetPassword/',views.resetUserPassword,name='user_resetUserpassword'),
+
     # Module: repair man
     path('repair_getorder/',views.get_order,name='getorder'),
     path('repair_finish/',views.repair_finsh,name='repair_finish'),
