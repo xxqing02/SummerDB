@@ -399,7 +399,7 @@ def sendVerificateCode(request):
     send_mail(
         '国产之星维修端密码重置',
         f'尊敬的用户你好,你的验证码是{code},验证码10分种内有效。',
-        'jovanwan6@gmail.com',
+        'jawung@163.com',
         [userEmail],
         fail_silently=False,
     )
