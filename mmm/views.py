@@ -401,11 +401,12 @@ def sendVerificateCode(request):
         send_mail(
             '国产之星维修端密码重置',
             f'尊敬的用户你好,你的验证码是{code},验证码10分种内有效。',
-            'jawung@163.com',
-            [userEmail],
+            'jawung@163.com',   # 发件人
+            [userEmail], # 收件人
             fail_silently=False,
         )
     except Exception as e:
+        print(str(e))    
         return JsonResponse({'status': 'fail', 'message': f'邮件发送失败: {str(e)}'})
 
     models.Verification.objects.filter(email=userEmail).delete()
@@ -427,6 +428,9 @@ def resetUserPassword(request):
     
     newpassword = request.GET.get('password')
     verificateCode = request.GET.get('verificateCode')
+
+    if newpassword == user.password:
+        return JsonResponse({'status': 'fail', 'message': '新密码不能与旧密码相同'})
 
     verification = models.Verification.objects.filter(email=user.email).first()
     if not verification or verification.code != verificateCode:
