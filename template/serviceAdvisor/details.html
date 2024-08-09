@@ -140,7 +140,7 @@
                     
                     <tr>
                         <th>委托人</th>
-                        <td>{{ principal_name }}</td>
+                        <td>{{ user_name }}</td>
                     </tr>
                     <tr>
                         <th>维修类型</th>
@@ -148,11 +148,11 @@
                     </tr>
                     
                     <tr>
-                        <th>Fault Information</th>
+                        <th>故障信息</th>
                         <td>{{ fault_info }}</td>
                     </tr>
                     <tr>
-                        <th>Material Cost</th>
+                        <th>材料费</th>
                         <td>
                             {% if material_cost == 0 %}
                                 未填写
@@ -162,7 +162,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Labor Cost</th>
+                        <th>人工费</th>
                         <td>
                             {% if labor_cost == 0 %}
                                 未填写
@@ -172,7 +172,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Status</th>
+                        <th>承接状态</th>
                         <td>
                             {% if is_carried %}
                                 已承接
@@ -182,7 +182,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Completion</th>
+                        <th>完成状态</th>
                         <td>
                             {% if is_finished %}
                                 已完成
@@ -192,7 +192,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Payment Status</th>
+                        <th>支付状态</th>
                         <td>
                             {% if is_paid %}
                                 已支付
