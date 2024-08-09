@@ -378,12 +378,12 @@ def user_login(request):
 
         user = models.User.objects.filter(name=username, password=password).first()
         if user:
-            return JsonResponse({'status': 'success', 'message': '登录成功'})
+            return JsonResponse({'status': 'success', 'message': '登录成功', 'role': 'user'})
 
         # 如果用户模型中未找到，尝试在维修人员模型中查找
         repairpeople = models.RepairMan.objects.filter(name=username, password=password).first()
         if repairpeople:
-            return JsonResponse({'status': 'success', 'message': '登录成功'})
+            return JsonResponse({'status': 'success', 'message': '登录成功', 'role': 'repairman'})
 
         # 未找到
         return JsonResponse({'status': 'fail', 'message': '用户名或密码错误'})
