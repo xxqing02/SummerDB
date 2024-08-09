@@ -395,14 +395,18 @@ def sendVerificateCode(request):
         return JsonResponse({'status': 'fail', 'message': '用户名不存在'})
 
     userEmail = user.email
+    print(userEmail)
     code = random.randint(100000, 999999)
-    send_mail(
-        '国产之星维修端密码重置',
-        f'尊敬的用户你好,你的验证码是{code},验证码10分种内有效。',
-        'jawung@163.com',
-        [userEmail],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            '国产之星维修端密码重置',
+            f'尊敬的用户你好,你的验证码是{code},验证码10分种内有效。',
+            'jawung@163.com',
+            [userEmail],
+            fail_silently=False,
+        )
+    except Exception as e:
+        return JsonResponse({'status': 'fail', 'message': f'邮件发送失败: {str(e)}'})
 
     models.Verification.objects.filter(email=userEmail).delete()
 
