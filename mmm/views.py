@@ -27,6 +27,7 @@ def entry(request):
             man = models.ServiceAdvisor.objects.filter(name=username).first()
             if man and man.password == password:
                 request.session['username'] = username
+                request.session.save() 
                 print("Session set: ", request.session['username']) 
                 return redirect('/service/entrust')
             else:
@@ -41,6 +42,7 @@ def entry(request):
             man = models.RepairManager.objects.filter(name=username).first()
             if man and man.password == password:
                 request.session['username'] = username
+                request.session.save() 
                 return redirect('/repair_manage/work')
             else:
                 context = {}
