@@ -435,7 +435,7 @@ def resetUserPassword(request):
     verification = models.Verification.objects.filter(email=user.email).first()
     if not verification or verification.code != verificateCode:
         return JsonResponse({'status': 'fail', 'message': '验证码错误'})
-    if verification.expires_at < timezone.now():
+    if verification.expiresAt < timezone.now():
         return JsonResponse({'status': 'fail', 'message': '验证码已过期'})
 
     else:
