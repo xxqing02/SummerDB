@@ -472,10 +472,12 @@ def user_managephone(request):
         
         elif action == "delete":
             imei = request.GET.get('imei')
-            if models.RepairCommission.objects.filter(phone__imei=imei).first():
+            record =  models.RepairCommission.objects.filter(phone__imei=imei).first()
+            if record and not record.isPaid:
                 return JsonResponse({'status': 'fail', 'message': '该手机维修中,无法删除'})
-            models.MobilePhone.objects.filter(imei=imei).first().delete()
-            return JsonResponse({'status': 'success', 'message': '删除成功'})
+            else:
+                models.MobilePhone.objects.filter(imei=imei).first().delete()
+                return JsonResponse({'status': 'success', 'message': '删除成功'})
         
 
 # details of commission
