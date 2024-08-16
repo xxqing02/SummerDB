@@ -53,7 +53,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',#解决跨域访问
 ]
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_ENGINE = 'django.contrib.sessions.backends.db' 
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_COOKIE_NAME  = "sessionid"
 SESSION_COOKIE_PATH  = "/"
 SESSION_COOKIE_DOMAIN = None
