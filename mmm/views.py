@@ -283,7 +283,7 @@ def check_cost(request):
         models.RepairCommission.objects.filter(id=commission_id).update(materialCost=material_cost,
                                                                           laborCost=labor_cost,
                                                                           totalCost=total_cost)
-        return redirect('/repairManager/check_cost')
+        return redirect('/repair_manage/check_cost')
     
     return render(request,'repairManager/check_cost.html',{'commission_list':commission_list})
 
